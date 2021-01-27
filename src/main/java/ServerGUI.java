@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ServerGUI extends JFrame implements ActionListener { //реализуем метод actionPerformed c) ->
+public class ServerGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler { //реализуем метод actionPerformed c) ->
 
     private static final int POS_X = 1000;
     private static final int POS_Y = 550;
@@ -29,7 +29,7 @@ public class ServerGUI extends JFrame implements ActionListener { //реализ
     }
 
     private ServerGUI() {
-        //Thread.setDefaultUncaughtExceptionHandler(this);
+        Thread.setDefaultUncaughtExceptionHandler(this);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(POS_X, POS_Y, WIDTH, HEIGHT);
         setResizable(true);
@@ -49,9 +49,22 @@ public class ServerGUI extends JFrame implements ActionListener { //реализ
         if (src == btnStop){
             chatServer.stop();
         }else if (src == btnStart){
+            //throw new RuntimeException("Exception test");
             chatServer.start(8189);
         }else {
             throw new RuntimeException("Unknown source: " + src);
         }
+    }
+
+    @Override
+    public void uncaughtException(Thread t, Throwable e) {
+        e.printStackTrace();
+        String msg;
+        StackTraceElement[] ste = e.getStackTrace();
+        msg = "Exception in " + t.getName() + " " +
+                e.getClass().getCanonicalName() + ": " +
+                e.getMessage() + "\n\t at " + ste[0];
+        JOptionPane.showMessageDialog(this, msg, "Exception", JOptionPane.ERROR_MESSAGE);
+        System.exit(1);
     }
 }
