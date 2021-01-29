@@ -15,6 +15,8 @@ public class ServerGUI extends JFrame implements ActionListener, Thread.Uncaught
     private final JButton btnStart = new JButton("Start");
     private final JButton btnStop = new JButton("Stop");
 
+
+
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(new Runnable() { // то есть тут у нас находится ананимный класс, реализующий интерфейс runnable -> почему через invokeLater?
