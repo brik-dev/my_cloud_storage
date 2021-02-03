@@ -1,6 +1,7 @@
 public class StorageServer {
 
     ServerSocketThread thread;
+
     public void start(int port){
         if (thread != null && thread.isAlive()) {
             System.out.println("Server already started");

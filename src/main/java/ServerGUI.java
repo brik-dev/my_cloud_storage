@@ -10,7 +10,7 @@ public class ServerGUI extends JFrame implements ActionListener, Thread.Uncaught
     private static final int WIDTH = 300;
     private static final int HEIGHT = 100;
 
-    private final StorageServer chatServer = new StorageServer();
+    private final StorageServer storageServer = new StorageServer();
 
     private final JButton btnStart = new JButton("Start");
     private final JButton btnStop = new JButton("Stop");
@@ -49,10 +49,9 @@ public class ServerGUI extends JFrame implements ActionListener, Thread.Uncaught
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
         if (src == btnStop){
-            chatServer.stop();
+            storageServer.stop();
         }else if (src == btnStart){
-            //throw new RuntimeException("Exception test");
-            chatServer.start(8189);
+            storageServer.start(8189);
         }else {
             throw new RuntimeException("Unknown source: " + src);
         }
