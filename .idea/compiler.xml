@@ -8,6 +8,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="cloud_client" />
         <module name="cloud_server" />
+        <module name="common" />
+        <module name="network" />
       </profile>
     </annotationProcessing>
   </component>

@@ -23,6 +23,8 @@
     <modules>
         <module>cloud_client</module>
         <module>cloud_server</module>
+        <module>network</module>
+        <module>common</module>
     </modules>
 
 
