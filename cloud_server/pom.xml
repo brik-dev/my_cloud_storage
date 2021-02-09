@@ -10,6 +10,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>cloud_server</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.brik</groupId>
+            <artifactId>my_cloud_storage</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.brik</groupId>
+            <artifactId>my_cloud_storage</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 
 </project>
