@@ -2,10 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.Socket;
 
-public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler, SocketThreadListener {
+public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler {
 
     private static final int WIDTH = 400;
     private static final int HEIGHT = 300;
@@ -36,7 +34,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     private final JTextField tfName = new JTextField();
     private final JButton btnUpload = new JButton("<html><b>Upload</b></html>");
 
-    SocketThread socketThread;
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -72,9 +70,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         add(panelTop, BorderLayout.NORTH);
         add(panelBottom, BorderLayout.SOUTH);
 
-        btnLogin.addActionListener(this);
         btnUpload.addActionListener(this);
-        //add(btnLogin);
 
         setVisible(true);
     }
@@ -91,24 +87,8 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         if(src == null) return;
         if (src == btnUpload){
             upload();
-        }else if (src == btnLogin){
-            connect();
-        } else {// оставляем себе подсказку, что мы тыкнули в неизвестный источник. Так как по просшествии времени мы, возможно добавим еще кнопку.
+        }else {// оставляем себе подсказку, что мы тыкнули в неизвестный источник. Так как по просшествии времени мы, возможно добавим еще кнопку.
             throw new RuntimeException("Unknown source: " + src);
-        }
-    }
-
-    private void connect(){
-        try{
-            Socket socket = new Socket(tfIPAddress.getText(), Integer.parseInt(tfPort.getText()));
-            // сокет создали и если мы попали на этострочку, значит сокет соединился с сервером и мы его оборачиваем в SocketThread
-
-            socketThread = new SocketThread(this, "Client", socket);
-            // теперь сентмаседж должен отправлять в socketThread message
-            // -> делаем его видимым e) ->
-        }catch (IOException e){ // если что, ловим ИО ексепшн
-            showException(Thread.currentThread(), e); // по факту IOException показываем IOException
-
         }
     }
 
@@ -133,18 +113,8 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     private void uploadToServer() {
 
     }
-    private void showException(Thread t, Exception e) {
-        String msg;
-        StackTraceElement[] ste = e.getStackTrace();
-        if (ste.length == 0)
-            msg = "Empty Stacktrace";
-        else {
-            msg = String.format("Exception in \"%s\" %s: %s\n\tat %s",
-                    t.getName(), e.getClass().getCanonicalName(), e.getMessage(), ste[0]);
-            JOptionPane.showMessageDialog(this, msg, "Exception", JOptionPane.ERROR_MESSAGE);
-        }
-        JOptionPane.showMessageDialog(null, msg, "Exception", JOptionPane.ERROR_MESSAGE);
-    }
+
+
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
@@ -156,34 +126,5 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
                 e.getMessage() + "\n\t at " + ste[0];
         JOptionPane.showMessageDialog(this, msg, "Exception", JOptionPane.ERROR_MESSAGE);
         System.exit(1);
-    }
-
-    /**
-     * Socket thread listener methods
-     * */
-
-    @Override
-    public void onSocketStart(SocketThread thread, Socket socket) {
-        System.out.println("OnSocketStart");//putLog("Start"); -> store in log file
-    }
-
-    @Override
-    public void onSocketStop(SocketThread thread) {
-        System.out.println("OnSocketStop");//putLog("Stop"); -> store in log file
-    }
-
-    @Override
-    public void onSocketReady(SocketThread thread, Socket socket) {
-        System.out.println("OnSocketReady");//putLog("Ready"); -> store in log file
-    }
-
-    @Override
-    public void onReceiveString(SocketThread thread, Socket socket, String msg) {
-        System.out.println("OnReceiveString");//putLog(msg); -> store in log file
-    }
-
-    @Override
-    public void onSocketException(SocketThread thread, Exception exception) {
-        showException(thread, exception);
     }
 }

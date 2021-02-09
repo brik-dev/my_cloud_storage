@@ -3,7 +3,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-public class SeverSocketThread extends Thread {
+public class ServerSocketThread extends Thread {
     private final int port;
     private final int timeout;
     private final ServerSocketThreadListener listener;
